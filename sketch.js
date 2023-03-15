@@ -3,10 +3,13 @@ var trex ,trex_running;
 var edges;
 var solo;
 var solo2;
+var nuvenpng
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
 solo_ing = loadImage ("ground2.png")
+nuvenpng = loadImage ('cloud.png')
+
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -47,7 +50,23 @@ if(solo.x<0){
 solo.x=solo.width/2
 
 
+
 }
   drawSprites();
+nuvens ()
+
+
+}
+
+
+function nuvens () {
+ if (frameCount%60===0) {
+  var nuven =createSprite (610,50,30,30)
+  nuven.velocityX=-3
+nuven.addImage (nuvenpng)
+nuven.y=Math.round(random(20,90))
+}
+
+
 
 }
