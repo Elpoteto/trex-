@@ -5,6 +5,9 @@ var solo;
 var solo2;
 var nuvenpng
 var c1,c2,c3,c4,c5,c6
+var nuvensg
+var cactosg
+var estado='inicio'
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -36,31 +39,44 @@ solo2.visible=false
 
 solo.addImage(solo_ing)
 
-
-
+nuvensg=new Group ()
+cactosg=new Group ()
 }
 
 function draw(){
   background("white");
+if (estado==='inicio'){
 
   if(keyDown("space")&&trex.y>160){
     trex.velocityY = -10;
   }
+
   trex.velocityY = trex.velocityY + 0.5; // gravidade
 solo.velocityX= -3
 
   trex.collide(edges)
-trex.collide(solo2)
+
 
 if(solo.x<0){
 solo.x=solo.width/2
 
-
-
 }
-  drawSprites();
 nuvens ()
 cactos()
+if (cactosg.isTouching(trex)) {
+  estado='fim'
+}
+}
+else if(estado==='fim') {
+ 
+ trex.velocityY=0
+  solo.velocityX= 0
+  cactosg.setVelocityXEach(0)
+  nuvensg.setVelocityXEach(0)
+  
+}
+  drawSprites();
+  trex.collide(solo2)
 
 }
 
@@ -68,10 +84,11 @@ cactos()
 function nuvens () {
  if (frameCount%60===0) {
   var nuven =createSprite (610,50,30,30)
-  nuven.velocityX=-3
+  nuven.velocityX=-4
 nuven.addImage (nuvenpng)
 nuven.y=Math.round(random(20,90))
 nuven.lifetime=220
+nuvensg.add (nuven)
 }
 
 
@@ -80,8 +97,11 @@ nuven.lifetime=220
 
 function cactos() {
   if (frameCount%60===0) {
-var cacto=createSprite (400,160,20,20)
+var cacto=createSprite (610,175,20,20)
 cacto.velocityX=-3
+cacto.scale=0.5
+cacto.lifetime=220
+cactosg.add (cacto)
 var ale=Math.round(random(1,6))
 switch (ale) {
   case 1:cacto.addImage(c1)
