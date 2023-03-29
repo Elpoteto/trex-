@@ -8,6 +8,8 @@ var c1,c2,c3,c4,c5,c6
 var nuvensg
 var cactosg
 var estado='inicio'
+var espetado
+var gameover,fimdejogo
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -19,6 +21,9 @@ c3=loadImage ('obstacle3.png')
 c4=loadImage ('obstacle4.png')
 c5=loadImage ('obstacle5.png')
 c6=loadImage ('obstacle6.png')
+
+espetado=loadAnimation('trex_collided.png')
+gameover=loadImage('gameOver.png')
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -28,6 +33,11 @@ function setup(){ // todas as configuraçoes dos objetos
   trex = createSprite(50,160,20,50);
   trex.addAnimation("running",trex_running);
   trex.scale = 0.5;
+
+  trex.addAnimation('espetado',espetado);
+
+trex.debug=true
+trex.setCollider('circle',0,0,40)
 
   edges = createEdgeSprites();
  
@@ -41,6 +51,10 @@ solo.addImage(solo_ing)
 
 nuvensg=new Group ()
 cactosg=new Group ()
+
+fimdejogo=createSprite(300,100,30,30)
+fimdejogo.addImage('gameover',gameover)
+fimdejogo.visible=false
 }
 
 function draw(){
@@ -73,7 +87,13 @@ else if(estado==='fim') {
   solo.velocityX= 0
   cactosg.setVelocityXEach(0)
   nuvensg.setVelocityXEach(0)
-  
+  cactosg.setLifetimeEach(-1)
+  nuvensg.setLifetimeEach(-1)
+
+trex.changeAnimation('espetado',espetado)
+
+fimdejogo.visible=true
+
 }
   drawSprites();
   trex.collide(solo2)
