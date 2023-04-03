@@ -10,6 +10,10 @@ var cactosg
 var estado='inicio'
 var espetado
 var gameover,fimdejogo
+var pulosom,diesom,checkpointsom
+var pontuacao=0
+var vel=0
+
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -24,6 +28,10 @@ c6=loadImage ('obstacle6.png')
 
 espetado=loadAnimation('trex_collided.png')
 gameover=loadImage('gameOver.png')
+
+pulosom=loadSound('jump.mp3')
+diesom=loadSound('die.mp3')
+checkpointsom=loadSound('checkPoint.mp3')
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -36,7 +44,7 @@ function setup(){ // todas as configuraçoes dos objetos
 
   trex.addAnimation('espetado',espetado);
 
-trex.debug=true
+
 trex.setCollider('circle',0,0,40)
 
   edges = createEdgeSprites();
@@ -59,10 +67,19 @@ fimdejogo.visible=false
 
 function draw(){
   background("white");
+  text('pontuação: '+pontuacao,500,50)
 if (estado==='inicio'){
+pontuacao=pontuacao+1
+if (pontuacao%500===0&&pontuacao>0){
+  checkpointsom.play()
+}
+
+
+
 
   if(keyDown("space")&&trex.y>160){
     trex.velocityY = -10;
+    pulosom.play()
   }
 
   trex.velocityY = trex.velocityY + 0.5; // gravidade
@@ -79,6 +96,7 @@ nuvens ()
 cactos()
 if (cactosg.isTouching(trex)) {
   estado='fim'
+  diesom.play()
 }
 }
 else if(estado==='fim') {
@@ -93,6 +111,8 @@ else if(estado==='fim') {
 trex.changeAnimation('espetado',espetado)
 
 fimdejogo.visible=true
+
+
 
 }
   drawSprites();
@@ -116,10 +136,16 @@ nuvensg.add (nuven)
 }
 
 function cactos() {
-  if (frameCount%60===0) {
+  if(pontuacao<1000){
+    vel=60
+  }
+  else{
+    vel=40
+  }
+  if (frameCount%vel===0) {
 var cacto=createSprite (610,175,20,20)
-cacto.velocityX=-3
-cacto.scale=0.5
+cacto.velocityX=-(3+(pontuacao/200))
+cacto.scale=0.4
 cacto.lifetime=220
 cactosg.add (cacto)
 var ale=Math.round(random(1,6))
