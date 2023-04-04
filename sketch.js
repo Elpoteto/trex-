@@ -13,7 +13,7 @@ var gameover,fimdejogo
 var pulosom,diesom,checkpointsom
 var pontuacao=0
 var vel=0
-
+var restart,restarti
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -32,6 +32,7 @@ gameover=loadImage('gameOver.png')
 pulosom=loadSound('jump.mp3')
 diesom=loadSound('die.mp3')
 checkpointsom=loadSound('checkPoint.mp3')
+restarti=loadImage('restart.png')
 }
 
 function setup(){ // todas as configuraçoes dos objetos
@@ -60,10 +61,18 @@ solo.addImage(solo_ing)
 nuvensg=new Group ()
 cactosg=new Group ()
 
-fimdejogo=createSprite(300,100,30,30)
+fimdejogo=createSprite(300,50,30,30)
 fimdejogo.addImage('gameover',gameover)
 fimdejogo.visible=false
+
+restart=createSprite(300,100,30,30)
+restart.addImage('reiniciar',restarti)
+restart.visible=false
+
+
+
 }
+
 
 function draw(){
   background("white");
@@ -112,8 +121,19 @@ trex.changeAnimation('espetado',espetado)
 
 fimdejogo.visible=true
 
+restart.visible=true
+if(mousePressedOver(restart)){
 
+estado='inicio'
+pontuacao=0
+cactosg.destroyEach()
+nuvensg.destroyEach()
+trex.changeAnimation('running',trex_running)
+fimdejogo.visible=false
 
+restart.visible=false
+
+}
 }
   drawSprites();
   trex.collide(solo2)
@@ -129,6 +149,8 @@ nuven.addImage (nuvenpng)
 nuven.y=Math.round(random(20,90))
 nuven.lifetime=220
 nuvensg.add (nuven)
+trex.depth=nuven.depth+1
+fimdejogo.depth=nuven.depth+1
 }
 
 
