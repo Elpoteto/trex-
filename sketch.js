@@ -14,6 +14,7 @@ var pulosom,diesom,checkpointsom
 var pontuacao=0
 var vel=0
 var restart,restarti
+var tw,th
 
 function preload(){ // funç~;ao que carregar todas as imagens e animações
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -36,7 +37,17 @@ restarti=loadImage('restart.png')
 }
 
 function setup(){ // todas as configuraçoes dos objetos
-  createCanvas(600,200)
+  var mobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  if(mobile){
+tw=displayWidth 
+th=displayHeight
+createCanvas(tw,th)
+  }else{
+    tw=windowWidth
+    th=windowHeight
+    createCanvas(tw,th)
+  }
+
   
   //crie um sprite de trex
   trex = createSprite(50,160,20,50);
@@ -54,18 +65,18 @@ solo2 = createSprite (300,200,600,10)
 solo2.visible=false
 
 
-  solo = createSprite(300,190,600,20);
+  solo = createSprite(tw/2,190,tw,20);
 
 solo.addImage(solo_ing)
 
 nuvensg=new Group ()
 cactosg=new Group ()
 
-fimdejogo=createSprite(300,50,30,30)
+fimdejogo=createSprite(tw/2,50,30,30)
 fimdejogo.addImage('gameover',gameover)
 fimdejogo.visible=false
-
-restart=createSprite(300,100,30,30)
+fimdejogo.scale=0.5
+restart=createSprite(tw/2,100,30,30)
 restart.addImage('reiniciar',restarti)
 restart.visible=false
 
@@ -76,7 +87,7 @@ restart.visible=false
 
 function draw(){
   background("white");
-  text('pontuação: '+pontuacao,500,50)
+  text('pontuação: '+pontuacao,tw-100,50)
 if (estado==='inicio'){
 pontuacao=pontuacao+1
 if (pontuacao%500===0&&pontuacao>0){
@@ -86,9 +97,10 @@ if (pontuacao%500===0&&pontuacao>0){
 
 
 
-  if(keyDown("space")&&trex.y>160){
+  if(touches.length>0||keyDown("space")&&trex.y>160){
     trex.velocityY = -10;
     pulosom.play()
+    touches=[]
   }
 
   trex.velocityY = trex.velocityY + 0.5; // gravidade
@@ -143,7 +155,7 @@ restart.visible=false
 
 function nuvens () {
  if (frameCount%60===0) {
-  var nuven =createSprite (610,50,30,30)
+  var nuven =createSprite (tw,50,30,30)
   nuven.velocityX=-4
 nuven.addImage (nuvenpng)
 nuven.y=Math.round(random(20,90))
@@ -165,7 +177,7 @@ function cactos() {
     vel=40
   }
   if (frameCount%vel===0) {
-var cacto=createSprite (610,175,20,20)
+var cacto=createSprite (tw,175,20,20)
 cacto.velocityX=-(3+(pontuacao/200))
 cacto.scale=0.4
 cacto.lifetime=220
