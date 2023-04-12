@@ -47,7 +47,7 @@ createCanvas(tw,th)
     th=windowHeight
     createCanvas(tw,th)
   }
-
+frameRate(80)
   
   //crie um sprite de trex
   trex = createSprite(50,160,20,50);
